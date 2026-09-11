@@ -1,0 +1,35 @@
+services:
+  frontend:
+    image: anujkrpathak/sms-frontend:latest
+    container_name: sms-frontend
+    ports:
+      - "5173:5173"
+    restart: always
+
+  backend:
+    image: anujkrpathak/sms-backend:latest
+    container_name: sms-backend
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: sms-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root6702
+      MYSQL_DATABASE: sms_db
+      MYSQL_USER: sms_user
+      MYSQL_PASSWORD: root6702
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+    healthcheck:
+      test:["CMD","mysqladmin","ping","-h", "localhost","-port9090"]
+
+volumes:
+  mysql_data:
